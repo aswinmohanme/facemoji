@@ -2,7 +2,7 @@
 import tkinter
 import tkinter.font
 
-def main():
+def createGUI():
     root = tkinter.Tk()
     root.title("FaceMoji")
 
@@ -39,6 +39,10 @@ def main():
 
     root.geometry("460x300")
     root.mainloop()
+
+
+def main():
+    createGUI()
 
 if __name__ == "__main__":
     main()
