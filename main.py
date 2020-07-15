@@ -1,6 +1,7 @@
 
 import tkinter
 import tkinter.font
+import os
 
 def createGUI():
     root = tkinter.Tk()
@@ -34,12 +35,14 @@ def createGUI():
     testWithData = tkinter.Button(root, text="Test with Data")
     testWithData.place(x=16, y=240)
 
-    openWebcam = tkinter.Button(root, text="Open Webcam", width=40) 
+    openWebcam = tkinter.Button(root, text="Open Webcam", width=40, command=openWebCamEvent) 
     openWebcam.place(x=130, y=240)
 
     root.geometry("460x300")
     root.mainloop()
 
+def openWebCamEvent():
+    os.system("echo hey")
 
 def main():
     createGUI()
