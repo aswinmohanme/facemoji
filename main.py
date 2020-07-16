@@ -1,4 +1,3 @@
-
 import tkinter
 import tkinter.font
 import numpy as np
@@ -12,9 +11,18 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import os
+from image_commons import nparray_as_image, draw_with_alpha
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-# command line argument
+def _load_emoticons(emotions):
+    """
+    Loads emotions images from graphics folder.
+    :param emotions: Array of emotions names.
+    :return: Array of emotions graphics.
+    """
+    return [nparray_as_image(cv2.imread('graphics/%s.png' % emotion, -1), mode=None) for emotion in emotions]
+
 
 def emotion(mode):
     # plots accuracy and loss curves
@@ -103,6 +111,9 @@ def emotion(mode):
     elif mode == "display":
         model.load_weights('model.h5')
 
+        emotions = ['anger', 'disgust', 'surprise', 'happy','neutral', 'sadness', 'surprise']
+        emoticons = _load_emoticons(emotions)
+
         # prevents openCL usage and unnecessary logging messages
         cv2.ocl.setUseOpenCL(False)
 
@@ -127,6 +138,9 @@ def emotion(mode):
                 prediction = model.predict(cropped_img)
                 maxindex = int(np.argmax(prediction))
                 cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+
+                image_to_draw = emoticons[maxindex]
+                draw_with_alpha(frame, image_to_draw, (x + 100, y, w, h))
 
             cv2.imshow('Video', cv2.resize(frame,(800,600),interpolation = cv2.INTER_CUBIC))
             if cv2.waitKey(1) & 0xFF == ord('q'):
