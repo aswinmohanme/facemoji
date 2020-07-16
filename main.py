@@ -12,6 +12,7 @@ from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import os
 from image_commons import nparray_as_image, draw_with_alpha
+from dataset_prepare import dataset_prepare
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -168,7 +169,7 @@ def createGUI():
     dataPrepareLabel.config(font=(default_font, 12))
     dataPrepareLabel.place(x=16, y=120)
 
-    createDatasetButton = tkinter.Button(root, text="Create Dataset")
+    createDatasetButton = tkinter.Button(root, text="Create Dataset", command=createDatasetEvent)
     createDatasetButton.place(x=16, y=148, width=160)
 
     startTrainingButton = tkinter.Button(root, text="Start Training", command=trainEvent)
@@ -195,6 +196,9 @@ def trainEvent():
 
 def testWithDataEvent():
     emotion("train")
+
+def createDatasetEvent():
+    dataset_prepare()
 
 def main():
     createGUI()
